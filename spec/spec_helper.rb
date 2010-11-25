@@ -1,9 +1,12 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'rspec/core'
+require 'rails' 
+require 'simply_stored/couch'
 require 'roles_simply_stored'
-require 'spec'
-require 'spec/autorun'
 
-Spec::Runner.configure do |config|
-  
+CouchPotato::Config.database_name = "http://localhost:5984/roles_simply_stored"
+
+RSpec.configure do |config|
+  config.mock_with :mocha
 end
+
+

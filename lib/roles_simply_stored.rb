@@ -1,0 +1,8 @@
+require 'roles_generic'
+require 'require_all'    
+require 'set'
+require 'sugar-high/array'
+require 'rails'
+require 'roles_simply_stored/namespaces'
+require 'roles_simply_stored/base'
+require 'roles_simply_stored/strategy'
