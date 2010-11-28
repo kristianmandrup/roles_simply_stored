@@ -17,10 +17,10 @@ module RoleStrategy::SimplyStored
            
       def in_role(role_name) 
         case role_name.downcase.to_sym
-        when :admin
-          where(role_attribute => true)
+        when :admin              
+          send("find_by_#{role_attribute}", true)
         else
-          where(role_attribute => false)
+          send("find_by_#{role_attribute}", false)
         end          
       end
     end
@@ -31,20 +31,22 @@ module RoleStrategy::SimplyStored
       # def role_attribute
       #   strategy_class.roles_attribute_name
       # end
+
+      def set_empty_role
+        self.send("#{role_attribute}=", false)
+      end
           
       # assign roles
-      def roles=(*new_roles)                                 
+      def roles=(*new_roles) 
         first_role = new_roles.flatten.first
-        puts "first_role: #{first_role}"
 
-        if !first_role
+        if first_role.nil?
           self.send("#{role_attribute}=", false)
           return  
         end        
 
-        puts "set role = #{first_role}"
         if valid_role?(first_role)
-          self.send("#{role_attribute}=", new_roles.flatten.first.admin?) 
+          self.send("#{role_attribute}=", first_role.admin?) 
         else
           raise ArgumentError, "The role #{first_role} is not a valid role"
         end

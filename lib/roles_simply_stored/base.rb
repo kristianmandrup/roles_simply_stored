@@ -4,7 +4,7 @@ module Roles::Base
   end
 end
 
-module Roles::ActiveRecord  
+module Roles::SimplyStored  
   def self.included(base) 
     base.extend Roles::Base
     base.extend ClassMethods
@@ -14,7 +14,7 @@ module Roles::ActiveRecord
   module ClassMethods      
     
     MAP = {
-      :admin_flag   => "key :admin_flag, Boolean",
+      :admin_flag   => "property :admin_flag, :type => :boolean",
       # :many_roles   => "references_many :many_roles, :stored_as => :array, :class_name => 'Role', :default => []",
       # :one_role     => "references_one :one_role, :class_name => 'Role'",
 
@@ -22,9 +22,9 @@ module Roles::ActiveRecord
       # :embed_one_role     => "one :one_role, :class_name => 'Role'",
 
       :roles_mask   => "property :roles_mask, :type => Integer, :default => 0",
-      :role_string  => "key :role_string,   :type => String",
-      :role_strings => "key :role_strings,  :type => Array",
-      :roles_string => "key :roles_string,  :type => String"
+      :role_string  => "property :role_string,   :type => String",
+      :role_strings => "property :role_strings,  :type => Array",
+      :roles_string => "property :roles_string,  :type => String"
     }
     
     def strategy name, options = {}

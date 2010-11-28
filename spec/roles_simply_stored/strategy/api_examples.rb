@@ -8,15 +8,15 @@ describe "Roles for SimplyStored: #{api_name}" do
   describe '#in_role' do
     it "should return first user matching role" do        
       if User.respond_to? :in_role
-        User.in_role(:guest).first.name.should == 'Guest user'
-        User.in_role(:admin).first.name.should == 'Admin user'
+        User.in_role(:guest).name.should == 'Guest user'
+        User.in_role(:admin).name.should == 'Admin user'
       end
     end
   end
   
   describe '#in_any_role' do
     it "should return first user matching role" do        
-      if User.respond_to? :in_roles
+      if User.respond_to? :in_any_role
         User.in_any_role(:guest, :user).first.name.should == 'Guest user'      
         User.in_any_role(:admin, :guest).should be_empty
       end
@@ -116,7 +116,7 @@ describe "Roles for SimplyStored: #{api_name}" do
       end
     end
   end 
-  
+  # 
   describe '#roles' do
     it "should be true that the roles of admin_user is an array with the role :admin" do      
       roles = @admin_user.roles
@@ -127,7 +127,7 @@ describe "Roles for SimplyStored: #{api_name}" do
           roles.first.name.to_sym.should == :admin
         end
         if @normal_user.class.role_strategy.name == :admin_flag
-          roles.first.should == true          
+          roles.first.admin?.should be_true
         end
       else       
         roles.to_sym.should == :admin
@@ -182,7 +182,7 @@ describe "Roles for SimplyStored: #{api_name}" do
       end
     end    
   end 
-  
+   
   describe '#remove_roles' do
     it "should remove user role :admin using #remove_roles" do
       @admin_user.remove_roles :admin

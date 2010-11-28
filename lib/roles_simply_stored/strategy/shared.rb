@@ -1,8 +1,9 @@
 module Roles::SimplyStored
   module Strategy
     module Shared
-      def set_role role
-        self.send("#{role_attribute}=", new_role(role))
+      def set_role role                 
+        vr = new_role(role)
+        self.send("#{role_attribute}=", vr)
       end
       alias_method :set_roles, :set_role
 
@@ -21,7 +22,7 @@ module Roles::SimplyStored
       end
 
       def select_valid_roles *roles
-        roles.flat_uniq.select{|role| role.valid? }
+        roles.flat_uniq.select{|role| valid_role? role }
         has_role_class? ? role_class.find_roles(roles).to_a : roles
       end           
     end
