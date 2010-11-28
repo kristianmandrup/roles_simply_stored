@@ -42,8 +42,11 @@ module RoleStrategy::SimplyStored
       include Roles::SimplyStored::Strategy::Single
 
       def add_roles *role_names
+        puts "add_roles: #{role_names}"
         new_roles = select_valid_roles(role_names) 
-        the_role = new_roles.first if !new_roles.empty?
+        puts "new_roles: #{new_roles}"
+        the_role = new_roles.first if !new_roles.empty?  
+        puts "the_role: #{the_role}"
         set_role new_role(the_role)
       end
 
@@ -55,7 +58,10 @@ module RoleStrategy::SimplyStored
       end
             
       def new_role role
-        role_class.find_role(extract_role role)        
+        puts "new_role: #{role}"
+        exr = extract_role role
+        puts "exr: #{exr}"
+        role_class.find_role(exr)        
       end  
       
       def new_roles *roles
@@ -72,6 +78,7 @@ module RoleStrategy::SimplyStored
 
       def select_valid_roles *role_names
         role_names = role_names.flat_uniq.select{|role| valid_role? role }
+        puts "select_valid_roles: #{role_names}"
         has_role_class? ? role_class.find_roles(role_names).to_a : role_names
       end
     end

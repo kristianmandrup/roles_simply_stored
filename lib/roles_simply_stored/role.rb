@@ -1,6 +1,7 @@
 module Roles::Base
   def valid_roles_are(*role_list)
     strategy_class.valid_roles = role_list.to_symbols
+    puts "create roles: #{role_list}"
     if role_class_name
       role_list.each do |name|
         role_class_name.create(:name => name.to_s)        
@@ -17,8 +18,14 @@ class Role
   property :name, :type => String
     
   class << self
-    def find_roles(*role_names) 
-      send('find_all_by_name', role_names.flatten)
+    def find_roles(*role_names)
+      puts "find_roles: #{role_names}" 
+      the_names = role_names.flatten.join(" ")
+      roles_found = Role.all.select do |r|
+        the_names.include?(r.name)
+      end
+      puts "found: #{roles_found}"
+      found
     end
 
     def find_role role_name
