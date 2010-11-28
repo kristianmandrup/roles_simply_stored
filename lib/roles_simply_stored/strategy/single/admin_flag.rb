@@ -26,7 +26,7 @@ module RoleStrategy::SimplyStored
     end
 
     module Implementation
-      include Roles::ActiveRecord::Strategy::Single
+      include Roles::SimplyStored::Strategy::Single
       
       # def role_attribute
       #   strategy_class.roles_attribute_name

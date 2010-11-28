@@ -11,6 +11,8 @@ end
 
 class Role
   include SimplyStored::Couch
+
+  property :name, :type => String
     
   class << self
     def find_roles(*role_names) 

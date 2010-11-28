@@ -12,7 +12,30 @@ module Roles::ActiveRecord
   end
 
   module ClassMethods      
-    def strategy name, options=nil
+    
+    MAP = {
+      :admin_flag   => "key :admin_flag, Boolean",
+      # :many_roles   => "references_many :many_roles, :stored_as => :array, :class_name => 'Role', :default => []",
+      # :one_role     => "references_one :one_role, :class_name => 'Role'",
+
+      # :embed_many_roles   => "many :many_roles, :class_name => 'Role'",
+      # :embed_one_role     => "one :one_role, :class_name => 'Role'",
+
+      :roles_mask   => "property :roles_mask, :type => Integer, :default => 0",
+      :role_string  => "key :role_string,   :type => String",
+      :role_strings => "key :role_strings,  :type => Array",
+      :roles_string => "key :roles_string,  :type => String"
+    }
+    
+    def strategy name, options = {}
+      if (options == :default || options[:config] == :default) && MAP[name]
+        instance_eval MAP[name] 
+      end
+
+      if !options.kind_of? Symbol
+        role_class = options[:role_class] ? options[:role_class].to_s.camelize.constantize : (Role if defined? Role)
+      end
+    
       set_role_strategy name, options
     end    
   end
