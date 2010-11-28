@@ -1,5 +1,7 @@
 require 'roles_simply_stored/strategy/single'
 
+puts "One Role loaded"
+
 module RoleStrategy::SimplyStored
   module OneRole
     def self.default_role_attribute
@@ -9,8 +11,7 @@ module RoleStrategy::SimplyStored
     def self.included base
       base.extend Roles::Generic::Role::ClassMethods
       base.extend ClassMethods
-      base.key :one_role_id, ObjectId 
-      base.key :one_role, Role
+      base.belongs_to :one_role, :class_name => 'Role'
     end
 
     module ClassMethods 
@@ -29,7 +30,7 @@ module RoleStrategy::SimplyStored
       def in_any_role(*role_names)
         begin
           role_ids = Role.find_roles(role_names).map(&:id)
-          all("#{role_attribute}._id" => role_ids)
+          send("find_all_by_#{role_attribute}" => role_ids)
           # all(role_id_attribute.in => role_ids)
         rescue 
           return []
@@ -79,3 +80,5 @@ module RoleStrategy::SimplyStored
     configure :num => :single, :type => :role_class
   end  
 end
+
+puts "One Role defined" if defined? RoleStrategy::SimplyStored::OneRole

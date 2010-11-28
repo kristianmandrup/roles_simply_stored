@@ -35,7 +35,7 @@ module Roles::SimplyStored
       if !options.kind_of? Symbol
         role_class = options[:role_class] ? options[:role_class].to_s.camelize.constantize : (Role if defined? Role)
       end
-    
+      puts "set_role_strategy: #{name}, #{options}"
       set_role_strategy name, options
     end    
   end

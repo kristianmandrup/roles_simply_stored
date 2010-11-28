@@ -12,11 +12,13 @@ end
 class Role
   include SimplyStored::Couch
 
+  has_many :users, :dependent => :destroy
+
   property :name, :type => String
     
   class << self
     def find_roles(*role_names) 
-      where(:name.in => role_names.flatten)
+      send('find_all_by_name', role_names.flatten)
     end
 
     def find_role role_name
